@@ -252,13 +252,21 @@ upgrade_record(MA) when tuple_size(MA) == 6 ->
 
 % Time stamp of current time.
 %% @spec unixtime() -> integer()
-unixtime() -> unixtime(now()).
+-ifdef(time_correction).
+unixtime() -> unixtime(os:timestamp()).
+-else.
+unixtime() -> unixtime(erlang:now()).
+-endif.
 
 %% @spec unixtime(now()) -> integer()
 unixtime({Mega, Secs, _Msecs}) -> Mega * 1000000 + Secs.
 
 %% @spec unixtime_float() -> float()
-unixtime_float() -> unixtime_float(now()).
+-ifdef(time_correction).
+unixtime_float() -> unixtime_float(os:timestamp()).
+-else.
+unixtime_float() -> unixtime_float(erlang:now()).
+-endif.
 
 %% @spec unixtime_float(now()) -> float()
 unixtime_float({M,S,U}) -> M*1000000 + S + U/1000000.
